@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- ===== ЗАГОЛОВОК СТРАНИЦЫ (теперь с именем) ===== -->
+    <title>Артем Вербицкий | Bar Manager</title>
+
+    <!-- ===== OPEN GRAPH МЕТА-ТЕГИ ДЛЯ КРАСИВОГО ПРЕВЬЮ ===== -->
+    <meta property="og:title" content="Артем Вербицкий | Bar Manager" />
+    <meta property="og:description" content="Bar Manager сети ресторанов «Пинта». Свяжитесь со мной по телефону, почте или в мессенджерах." />
+    <meta property="og:image" content="https://i.ibb.co/j9b7yWDL/i.webp" />
+    <meta property="og:url" content="https://ваша-ссылка-на-визитку.netlify.app" />
+    <meta property="og:type" content="profile" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --bg-primary:#061e27; --bg-secondary:#0a2835; --bg-card:#0e3240;
+            --bg-card-hover:#133d4d; --accent:#c9a06c; --accent-light:#d4b07a;
+            --accent-dark:#a08050; --text-primary:#f0e6d8; --text-secondary:#b8a890;
+            --text-muted:#4a6a7a; --border:#1a4a5c; --border-hover:#245a6e;
+            --shadow:rgba(0,0,0,0.5); --shadow-accent:rgba(201,160,108,0.12);
+            --ios-radius:14px; --ios-radius-sm:10px;
+        }
+        html, body { height:100%; overflow:hidden; margin:0; padding:0; }
+        body {
+            font-family:'Inter',-apple-system,sans-serif;
+            background:var(--bg-card); color:var(--text-primary);
+            display:flex; align-items:center; justify-content:center;
+            height:100vh; height:100dvh; width:100vw; overflow:hidden;
+            -webkit-font-smoothing:antialiased;
+        }
+        .card {
+            width:100%; height:100vh; height:100dvh;
+            background:var(--bg-card); padding:20px 20px 16px;
+            display:flex; flex-direction:column; justify-content:center;
+            animation:fadeInUp 0.6s ease-out 0.15s both;
+            overflow-y:auto; overflow-x:hidden;
+        }
+        .card::before, .card::after { display:none !important; }
+        .avatar-wrap {
+            position:relative; width:100px; height:100px;
+            margin:0 auto 10px; flex-shrink:0;
+        }
+        .avatar {
+            width:100%; height:100%; border-radius:50%;
+            background:var(--bg-secondary); border:2.5px solid var(--border);
+            display:flex; align-items:center; justify-content:center;
+            overflow:hidden; object-fit:cover;
+            transition:all 0.3s ease;
+            box-shadow:0 0 30px rgba(201,160,108,0.05);
+        }
+        .avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+        .avatar::after {
+            content:''; position:absolute; inset:-4px; border-radius:50%; padding:2.5px;
+            background:linear-gradient(135deg, rgba(201,160,108,0.15), rgba(201,160,108,0.4), rgba(201,160,108,0.15));
+            -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
+            transition:all 0.3s ease;
+        }
+        .avatar:hover::after {
+            background:linear-gradient(135deg, rgba(201,160,108,0.3), rgba(201,160,108,0.6), rgba(201,160,108,0.3));
+        }
+        .avatar:hover { border-color:var(--accent); transform:scale(1.05); box-shadow:0 0 40px rgba(201,160,108,0.15); }
+        .name { font-size:24px; font-weight:700; color:var(--text-primary); text-align:center; letter-spacing:-0.3px; flex-shrink:0; }
+        .title { text-align:center; font-size:13px; font-weight:500; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-top:2px; flex-shrink:0; }
+        .subtitle { text-align:center; font-size:12px; color:var(--text-muted); margin-top:2px; flex-shrink:0; }
+        .divider { width:40px; height:2px; background:linear-gradient(90deg, transparent, var(--accent), transparent); margin:10px auto 12px; border-radius:2px; opacity:0.4; flex-shrink:0; }
+        .contacts { display:flex; flex-direction:column; gap:8px; flex-shrink:0; }
+        .contact-item {
+            display:flex; align-items:center; gap:12px; padding:11px 14px;
+            background:var(--bg-secondary); border:1px solid var(--border);
+            border-radius:var(--ios-radius); text-decoration:none;
+            color:var(--text-primary); font-size:13px; font-weight:400;
+            cursor:pointer; transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+            position:relative; -webkit-tap-highlight-color:transparent;
+            user-select:none; flex-shrink:0;
+        }
+        .contact-item:active { transform:scale(0.97); background:var(--bg-card-hover); transition-duration:0.1s; }
+        .contact-item .icon { width:20px; height:20px; flex-shrink:0; color:var(--accent); opacity:0.8; transition:all 0.3s ease; }
+        .contact-item .label { flex:1; color:var(--text-primary); font-weight:450; font-size:13px; }
+        .contact-item .action-hint {
+            font-size:10px; color:var(--text-muted); transition:color 0.3s;
+            background:rgba(255,255,255,0.03); padding:2px 8px; border-radius:30px;
+            border:1px solid transparent; white-space:nowrap;
+        }
+        .contact-item:hover .action-hint { color:var(--accent-light); border-color:rgba(201,160,108,0.15); }
+        .copy-feedback { position:absolute; right:12px; font-size:11px; color:var(--accent); opacity:0; transition:opacity 0.3s; font-weight:500; }
+        .copy-feedback.show { opacity:1; }
+        .restaurants {
+            margin-top:10px; padding:8px 10px; background:var(--bg-secondary);
+            border-radius:var(--ios-radius); border:1px solid var(--border);
+            animation:fadeIn 0.3s ease; flex-shrink:0;
+        }
+        .restaurants-header {
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            font-size:9px; text-transform:uppercase; letter-spacing:1.5px;
+            color:var(--text-muted); margin-bottom:5px;
+        }
+        .restaurants-header .r-header-icon {
+            width:14px; height:14px; color:var(--text-muted); opacity:0.6;
+        }
+        .restaurant-item {
+            display:flex; align-items:center; gap:8px; padding:5px 8px;
+            border-radius:var(--ios-radius-sm); text-decoration:none;
+            color:var(--text-secondary); font-size:11px;
+            transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+            border:1px solid transparent; -webkit-tap-highlight-color:transparent;
+        }
+        .restaurant-item:active { transform:scale(0.97); }
+        .restaurant-item .r-icon { width:16px; height:16px; flex-shrink:0; color:var(--accent); opacity:0.6; }
+        .restaurant-item .r-address { flex:1; font-size:11px; }
+        .restaurant-item .r-hint { font-size:9px; color:var(--text-muted); background:rgba(255,255,255,0.03); padding:1px 8px; border-radius:30px; white-space:nowrap; }
+        .restaurant-item:hover .r-hint { color:var(--accent-light); }
+        .toast {
+            position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(80px);
+            background:var(--bg-secondary); color:var(--text-primary);
+            padding:10px 24px; border-radius:60px; font-size:13px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.6); opacity:0;
+            transition:all 0.5s cubic-bezier(0.16,1,0.3,1);
+            border:1px solid var(--border); pointer-events:none; z-index:999;
+            backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+        }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+        .save-contact {
+            display:flex; align-items:center; justify-content:center; gap:10px;
+            padding:12px 14px; margin-top:10px;
+            background:linear-gradient(135deg, rgba(201,160,108,0.15), rgba(201,160,108,0.08));
+            border:1.5px solid var(--accent); border-radius:var(--ios-radius);
+            text-decoration:none; color:var(--accent); font-size:13px; font-weight:600;
+            cursor:pointer; transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+            position:relative; -webkit-tap-highlight-color:transparent;
+            user-select:none; flex-shrink:0; letter-spacing:0.3px;
+        }
+        .save-contact:active { transform:scale(0.97); transition-duration:0.1s; }
+        .save-contact:hover {
+            background:linear-gradient(135deg, rgba(201,160,108,0.25), rgba(201,160,108,0.12));
+            box-shadow:0 0 20px rgba(201,160,108,0.1);
+        }
+        .save-contact .icon { width:20px; height:20px; flex-shrink:0; }
+
+        @media (max-width:380px) {
+            .card { padding:14px 12px 12px; }
+            .avatar-wrap { width:75px; height:75px; }
+            .name { font-size:19px; }
+            .title { font-size:11px; }
+            .subtitle { font-size:10px; }
+            .contact-item { padding:9px 10px; font-size:12px; }
+            .contact-item .icon { width:18px; height:18px; }
+            .contact-item .label { font-size:12px; }
+            .divider { margin:6px auto 8px; }
+            .contacts { gap:6px; }
+            .restaurant-item { padding:4px 6px; font-size:10px; }
+            .restaurant-item .r-address { font-size:10px; }
+            .restaurant-item .r-icon { width:14px; height:14px; }
+            .restaurants-header { font-size:8px; gap:6px; }
+            .restaurants-header .r-header-icon { width:12px; height:12px; }
+            .save-contact { padding:9px 10px; font-size:12px; }
+            .save-contact .icon { width:18px; height:18px; }
+        }
+        @media (max-height:640px) {
+            .card { padding:12px 14px 10px; }
+            .avatar-wrap { width:60px; height:60px; margin-bottom:6px; }
+            .name { font-size:17px; }
+            .title { font-size:10px; }
+            .subtitle { font-size:9px; }
+            .divider { margin:4px auto 6px; width:30px; }
+            .contacts { gap:5px; }
+            .contact-item { padding:7px 10px; font-size:11px; }
+            .contact-item .icon { width:16px; height:16px; }
+            .contact-item .label { font-size:11px; }
+            .restaurants { padding:5px 8px; margin-top:6px; }
+            .restaurant-item { padding:3px 6px; font-size:10px; }
+            .restaurant-item .r-address { font-size:10px; }
+            .restaurant-item .r-icon { width:14px; height:14px; }
+            .restaurants-header { font-size:8px; margin-bottom:3px; }
+            .restaurants-header .r-header-icon { width:12px; height:12px; }
+            .save-contact { padding:7px 10px; font-size:11px; margin-top:6px; }
+            .save-contact .icon { width:16px; height:16px; }
+        }
+        @media (min-width:600px) {
+            .card { padding:40px 36px 32px; }
+            .avatar-wrap { width:120px; height:120px; }
+            .name { font-size:30px; }
+            .title { font-size:15px; }
+            .subtitle { font-size:14px; }
+            .contact-item { padding:14px 18px; font-size:15px; }
+            .contact-item .icon { width:24px; height:24px; }
+            .contact-item .label { font-size:15px; }
+            .restaurant-item { font-size:13px; }
+            .restaurant-item .r-address { font-size:13px; }
+            .restaurant-item .r-icon { width:18px; height:18px; }
+            .restaurants-header { font-size:10px; }
+            .restaurants-header .r-header-icon { width:16px; height:16px; }
+            .save-contact { padding:14px 18px; font-size:15px; margin-top:12px; }
+            .save-contact .icon { width:24px; height:24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <div class="avatar-wrap">
+        <div class="avatar">
+            <img src="https://i.ibb.co/j9b7yWDL/i.webp" alt="Артем Вербицкий" />
+        </div>
+    </div>
+
+    <div class="name">Артем Вербицкий</div>
+    <div class="title">Bar Manager</div>
+    <div class="subtitle">Сеть ресторанов «Пинта»</div>
+
+    <div class="divider"></div>
+
+    <div class="contacts">
+        <!-- 1. Телефон -->
+        <div class="contact-item" id="phoneCopy">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="label">+7 989 714 34 87</span>
+            <span class="action-hint">копировать</span>
+            <span class="copy-feedback" id="copyFeedbackPhone">✓</span>
+        </div>
+
+        <!-- 2. Почта -->
+        <a href="mailto:bar@pinta-rostov.ru" class="contact-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="label">bar@pinta-rostov.ru</span>
+            <span class="action-hint">написать</span>
+        </a>
+
+        <!-- 3. MAX (ссылка обновлена) -->
+        <a href="https://max.ru/u/f9LHodD0cOISAjin-pS9wi1aPrBOK-ty3P0VJzdlMJw3R-2l4NXYNAd_kMA" class="contact-item" target="_blank">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="label">MAX</span>
+            <span class="action-hint">написать</span>
+        </a>
+
+        <!-- 4. Telegram -->
+        <a href="https://t.me/eemfo" class="contact-item" target="_blank">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 2L15 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="label">Telegram</span>
+            <span class="action-hint">@eemfo</span>
+        </a>
+
+        <!-- 5. Instagram -->
+        <a href="https://instagram.com/e.emfo" class="contact-item" target="_blank">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/>
+            </svg>
+            <span class="label">Instagram</span>
+            <span class="action-hint">@e.emfo</span>
+        </a>
+
+        <!-- 6. Рестораны на карте -->
+        <a href="#restaurants" class="contact-item" id="restaurantsLink">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="label">Рестораны на карте</span>
+            <span class="action-hint">показать</span>
+        </a>
+    </div>
+
+    <!-- Блок адресов (по клику) -->
+    <div class="restaurants" id="restaurantsList" style="display: none;">
+        <div class="restaurants-header">
+            <svg class="r-header-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Адреса ресторанов
+        </div>
+
+        <a href="https://yandex.ru/maps/?text=Ростов-на-Дону,+пр.+Ворошиловский,+62" class="restaurant-item" target="_blank">
+            <svg class="r-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="r-address">Пинта на Ворошиловском — пр. Ворошиловский, 62</span>
+            <span class="r-hint">открыть</span>
+        </a>
+
+        <a href="https://yandex.ru/maps/?text=Ростов-на-Дону,+пр.+Будённовский,+1Г" class="restaurant-item" target="_blank">
+            <svg class="r-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="r-address">Пинта Green — пр. Будённовский, 1Г</span>
+            <span class="r-hint">открыть</span>
+        </a>
+
+        <a href="https://yandex.ru/maps/?text=Ростов-на-Дону,+ул.+Платона+Кляты,+4" class="restaurant-item" target="_blank">
+            <svg class="r-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="r-address">Пинта на Платона Кляты — ул. Платона Кляты, 4</span>
+            <span class="r-hint">открыть</span>
+        </a>
+
+        <a href="https://yandex.ru/maps/?text=Ростов-на-Дону,+ул.+Зорге,+64Б" class="restaurant-item" target="_blank">
+            <svg class="r-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="r-address">Пинта на Зорге — ул. Зорге, 64Б</span>
+            <span class="r-hint">открыть</span>
+        </a>
+
+        <a href="https://yandex.ru/maps/?text=Ростов-на-Дону,+пр.+Космонавтов,+2/2" class="restaurant-item" target="_blank">
+            <svg class="r-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="r-address">Пинта на Космонавтов — пр. Космонавтов, 2/2</span>
+            <span class="r-hint">открыть</span>
+        </a>
+
+        <a href="https://yandex.ru/maps/?text=Таганрог,+ул.+Петровская,+101А" class="restaurant-item" target="_blank">
+            <svg class="r-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="r-address">Пинта Таганрог — ул. Петровская, 101А</span>
+            <span class="r-hint">открыть</span>
+        </a>
+    </div>
+
+    <!-- Кнопка сохранения контакта -->
+    <a href="#" class="save-contact" id="saveContact">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 8v6M16 11h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Сохранить контакт</span>
+    </a>
+
+</div>
+
+<div class="toast" id="toast">📋 Скопировано</div>
+
+<script>
+    (function() {
+        const phoneItem = document.getElementById('phoneCopy');
+        const copyFeedbackPhone = document.getElementById('copyFeedbackPhone');
+        const toast = document.getElementById('toast');
+        const phoneNumber = '+7 989 714 34 87';
+
+        phoneItem.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const cleanPhone = phoneNumber.replace(/\s/g, '');
+            try {
+                await navigator.clipboard.writeText(cleanPhone);
+                showFeedback('✓');
+                showToast('📞 Телефон скопирован');
+            } catch {
+                const textarea = document.createElement('textarea');
+                textarea.value = cleanPhone;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showFeedback('✓');
+                showToast('📞 Телефон скопирован');
+            }
+        });
+
+        function showFeedback(text) {
+            copyFeedbackPhone.textContent = text;
+            copyFeedbackPhone.classList.add('show');
+            setTimeout(() => copyFeedbackPhone.classList.remove('show'), 2000);
+        }
+
+        let toastTimeout;
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        const restaurantsLink = document.getElementById('restaurantsLink');
+        const restaurantsList = document.getElementById('restaurantsList');
+        let restaurantsVisible = false;
+
+        restaurantsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            restaurantsVisible = !restaurantsVisible;
+            restaurantsList.style.display = restaurantsVisible ? 'block' : 'none';
+            restaurantsLink.querySelector('.action-hint').textContent = restaurantsVisible ? 'скрыть' : 'показать';
+        });
+
+        // Сохранение контакта
+        document.getElementById('saveContact').addEventListener('click', function(e) {
+            e.preventDefault();
+            const vcardData = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'FN:Артем Вербицкий',
+                'TEL:+79897143487',
+                'EMAIL:bar@pinta-rostov.ru',
+                'ORG:Пинта',
+                'TITLE:Bar Manager',
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Артем_Вербицкий.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast('📇 Контакт сохранён в телефонную книгу');
+        });
+
+        console.log('🍸 Визитка бар-менеджера "Пинта" — Артем Вербицкий');
+    })();
+</script>
+
+</body>
+</html>
