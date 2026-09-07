@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-    <!-- ===== ЗАГОЛОВОК СТРАНИЦЫ (теперь с именем) ===== -->
+    <!-- ===== ЗАГОЛОВОК СТРАНИЦЫ ===== -->
     <title>Артем Вербицкий | Bar Manager</title>
 
-    <!-- ===== OPEN GRAPH МЕТА-ТЕГИ ДЛЯ КРАСИВОГО ПРЕВЬЮ ===== -->
+    <!-- ===== OPEN GRAPH МЕТА-ТЕГИ ДЛЯ ПРЕВЬЮ ===== -->
     <meta property="og:title" content="Артем Вербицкий | Bar Manager" />
     <meta property="og:description" content="Bar Manager сети ресторанов «Пинта». Свяжитесь со мной по телефону, почте или в мессенджерах." />
     <meta property="og:image" content="https://i.ibb.co/j9b7yWDL/i.webp" />
@@ -243,7 +243,7 @@
             <span class="action-hint">написать</span>
         </a>
 
-        <!-- 3. MAX (ссылка обновлена) -->
+        <!-- 3. MAX -->
         <a href="https://max.ru/u/f9LHodD0cOISAjin-pS9wi1aPrBOK-ty3P0VJzdlMJw3R-2l4NXYNAd_kMA" class="contact-item" target="_blank">
             <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="2" width="20" height="20" rx="6" stroke="currentColor" stroke-width="1.5"/>
@@ -415,17 +415,19 @@
             restaurantsLink.querySelector('.action-hint').textContent = restaurantsVisible ? 'скрыть' : 'показать';
         });
 
-        // Сохранение контакта
+        // ===== ИСПРАВЛЕННОЕ СОХРАНЕНИЕ КОНТАКТА =====
         document.getElementById('saveContact').addEventListener('click', function(e) {
             e.preventDefault();
+
             const vcardData = [
                 'BEGIN:VCARD',
                 'VERSION:3.0',
                 'FN:Артем Вербицкий',
+                'N:Вербицкий;Артем;;;',  // структурированное имя (фамилия; имя; отчество; префикс; суффикс)
                 'TEL:+79897143487',
                 'EMAIL:bar@pinta-rostov.ru',
-                'ORG:Пинта',
                 'TITLE:Bar Manager',
+                // 'ORG:Пинта',  // убрал, чтобы имя не заменялось на организацию
                 'END:VCARD'
             ].join('\n');
 
@@ -438,7 +440,8 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
-            showToast('📇 Контакт сохранён в телефонную книгу');
+
+            showToast('📇 Контакт сохранён как «Артем Вербицкий»');
         });
 
         console.log('🍸 Визитка бар-менеджера "Пинта" — Артем Вербицкий');
